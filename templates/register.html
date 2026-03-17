@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="page-title">
+  <div>
+    <h1>Đăng ký</h1>
+    <p>Tạo tài khoản mới để dùng ứng dụng.</p>
+  </div>
+</div>
+
+{% if error %}
+<div class="result" style="background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.25); margin-bottom: 1rem; padding: 0.75rem;">
+  {{ error }}
+</div>
+{% endif %}
+
+<div class="card">
+  <form method="POST" class="form" id="registerForm">
+    <label for="username">Username</label>
+    <input id="username" name="username" type="text" placeholder="Username (tối thiểu 3 ký tự)" required />
+    <small style="color: rgba(255,255,255,0.5);">Chỉ chứa chữ, số và gạch dưới</small>
+
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" placeholder="user@example.com" required />
+    <small style="color: rgba(255,255,255,0.5);" id="emailError"></small>
+
+    <label for="phone">Số điện thoại</label>
+    <input id="phone" name="phone" type="tel" placeholder="0912345678" required />
+    <small style="color: rgba(255,255,255,0.5);" id="phoneError"></small>
+
+    <label for="password">Mật khẩu</label>
+    <div style="position: relative;">
+      <input id="password" name="password" type="password" placeholder="Tối thiểu 6 ký tự" required />
+      <button type="button" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.7); font-size: 1.2rem; padding: 0;">
+        👁️
+      </button>
+    </div>
+    <small style="color: rgba(255,255,255,0.5);">Ít nhất 6 ký tự, gồm chữ và số</small>
+
+    <button type="submit" id="submitBtn">Đăng ký</button>
+  </form>
+
+  <p style="margin-top: 16px; text-align: center; color: rgba(255,255,255,0.72);">Đã có tài khoản? <a href="/login" style="color: #4da6ff; text-decoration: none;">Đăng nhập ngay</a></p>
+</div>
+
+<script>
+  const emailInput = document.getElementById('email');
+  const phoneInput = document.getElementById('phone');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const toggleButton = document.getElementById('togglePassword');
+  const emailError = document.getElementById('emailError');
+  const phoneError = document.getElementById('phoneError');
+  const form = document.getElementById('registerForm');
+
+  // Toggle password visibility
+  toggleButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      toggleButton.textContent = '🙈';
+    } else {
+      passwordInput.type = 'password';
+      toggleButton.textContent = '👁️';
+    }
+  });
+
+  // Validate email in real-time
+  emailInput.addEventListener('blur', function() {
+    const email = this.value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      emailError.textContent = '❌ Email không hợp lệ';
+      emailError.style.color = '#ff6b6b';
+    } else if (email) {
+      emailError.textContent = '✓ Email hợp lệ';
+      emailError.style.color = '#4da6ff';
+    } else {
+      emailError.textContent = '';
+    }
+  });
+
+  // Validate phone in real-time
+  phoneInput.addEventListener('blur', function() {
+    const phone = this.value;
+    const phoneRegex = /^0\d{9,10}$/;
+    if (phone && !phoneRegex.test(phone)) {
+      phoneError.textContent = '❌ Số điện thoại không hợp lệ (0xxxxxxxxx, 10-11 chữ số)';
+      phoneError.style.color = '#ff6b6b';
+    } else if (phone) {
+      phoneError.textContent = '✓ Số điện thoại hợp lệ';
+      phoneError.style.color = '#4da6ff';
+    } else {
+      phoneError.textContent = '';
+    }
+  });
+
+  phoneInput.addEventListener('input', function() {
+    // Chỉ cho phép nhập số
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
+
+  // Validate on submit
+  form.addEventListener('submit', function(e) {
+    let isValid = true;
+
+    // Validate username
+    const usernameRegex = /^[a-zA-Z0-9_]{3,}$/;
+    if (!usernameRegex.test(usernameInput.value)) {
+      alert('Username phải ít nhất 3 ký tự (chữ, số, gạch dưới)');
+      isValid = false;
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value)) {
+      alert('Email không hợp lệ');
+      isValid = false;
+    }
+
+    // Validate phone
+    const phoneRegex = /^0\d{9,10}$/;
+    if (!phoneRegex.test(phoneInput.value)) {
+      alert('Số điện thoại không hợp lệ (0xxxxxxxxx, 10-11 chữ số)');
+      isValid = false;
+    }
+
+    // Validate password
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9@$!%*?&]{6,}$/;
+    if (!passwordRegex.test(passwordInput.value)) {
+      alert('Mật khẩu phải ít nhất 6 ký tự, gồm chữ cái và số');
+      isValid = false;
+    }
+
+    if (!isValid) {
+      e.preventDefault();
+    }
+  });
+</script>
+
+{% endblock %}

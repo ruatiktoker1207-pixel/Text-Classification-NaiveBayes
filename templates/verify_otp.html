@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="page-title">
+  <div>
+    <h1>Xác minh OTP</h1>
+    <p>Nhập mã OTP vừa được gửi đến email</p>
+  </div>
+</div>
+
+{% if error %}
+<div class="result" style="background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.25); margin-bottom: 1rem; padding: 0.75rem;">
+  ❌ {{ error }}
+</div>
+{% endif %}
+
+<div class="card">
+  <form method="POST" class="form" id="otpForm">
+    <label for="otp">Mã OTP (6 chữ số)</label>
+    <input id="otp" name="otp" type="text" placeholder="000000" maxlength="6" required />
+    <small style="color: rgba(255,255,255,0.5);">Mã này sẽ hết hạn trong 10 phút</small>
+
+    <button type="submit">Xác minh</button>
+  </form>
+
+  <div style="margin-top: 16px;">
+    <p style="text-align: center; color: rgba(255,255,255,0.72); margin: 8px 0;">
+      Không nhận được mã? <a href="/forgot_password" style="color: #4da6ff; text-decoration: none;">Gửi lại</a>
+    </p>
+    <p style="text-align: center; color: rgba(255,255,255,0.72); margin: 8px 0;">
+      <a href="/login" style="color: #4da6ff; text-decoration: none;">← Quay lại đăng nhập</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  const otpInput = document.getElementById('otp');
+  const form = document.getElementById('otpForm');
+  
+  // Chỉ cho phép nhập số
+  otpInput.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
+  
+  form.addEventListener('submit', function(e) {
+    if (otpInput.value.length !== 6) {
+      e.preventDefault();
+      alert('Mã OTP phải có 6 chữ số');
+    }
+  });
+</script>
+
+{% endblock %}

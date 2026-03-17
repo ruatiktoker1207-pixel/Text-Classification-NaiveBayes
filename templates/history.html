@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Prediction History</h2>
+
+{% if message %}
+<div class="result" style="background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.25); margin-bottom: 1rem; padding: 0.75rem;">
+  {{ message }}
+</div>
+{% endif %}
+
+<form method="POST" action="/clear_history" style="margin-bottom: 1rem; display:inline-block; margin-right:0.5rem;">
+  <button type="submit" class="button-secondary">Xóa lịch sử dự đoán</button>
+</form>
+
+<a href="/export_history" class="button-secondary" style="display:inline-block; padding:0.5rem 1rem; text-decoration:none; background:#007bff; color:white; border-radius:4px;">Tải xuống CSV</a>
+
+<a href="/export_summary" class="button-secondary" style="display:inline-block; padding:0.5rem 1rem; text-decoration:none; background:#28a745; color:white; border-radius:4px; margin-left:0.5rem;">Tải xuống Tóm tắt</a>
+
+<table border="1">
+
+<tr>
+<th>#</th>
+<th>Text</th>
+<th>Result</th>
+<th>Hành động</th>
+</tr>
+
+{% for row in rows %}
+<tr>
+  <td>{{ loop.index }}</td>
+  <td>{{ row[1] }}</td>
+  <td>{{ row[2] }}</td>
+  <td>
+    <form method="POST" action="/delete_prediction/{{ row[0] }}" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa dòng này không?');">
+      <button type="submit" class="button-secondary" style="font-size:0.85rem; padding:0.35rem 0.6rem;">Xóa</button>
+    </form>
+  </td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}
