@@ -1,4 +1,4 @@
-Link chạy:  https://passage-strict-allowed-paris.trycloudflare.com  
+Link chạy:   https://plasma-antonio-terrorists-earrings.trycloudflare.com  
  # Text Classification using Naive Bayes
 
 ## Introduction
