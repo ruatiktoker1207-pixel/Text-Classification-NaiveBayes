@@ -1,4 +1,4 @@
-Link chạy: https://mixer-pledge-alt-attempts.trycloudflare.com  
+Link chạy:  https://passage-strict-allowed-paris.trycloudflare.com  
  # Text Classification using Naive Bayes
 
 ## Introduction
