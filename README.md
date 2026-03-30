@@ -1,4 +1,7 @@
 Link chạy:     https://environmental-allocated-weblog-consideration.trycloudflare.com
+Tài khoản và Mật khẩu demo:
+Tài Khoản: admin
+Mật Khẩu: 123
  # Text Classification using Naive Bayes
 
 ## Introduction
